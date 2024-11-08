@@ -120,6 +120,9 @@ public final class XPrisonEnchants implements XPrisonModule {
 
 		ValueCommand valueCommand = new ValueCommand(this);
 		valueCommand.register();
+
+		ToggleCharityMessagesCommand toggleCharityMessagesCommand = new ToggleCharityMessagesCommand(this);
+		toggleCharityMessagesCommand.register();
 	}
 
 

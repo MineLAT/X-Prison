@@ -46,10 +46,26 @@ public class EnchantsManager {
 
 	private final XPrisonEnchants plugin;
 	private final List<UUID> lockedPlayers;
+	private final List<UUID> charityMessageOnPlayers;
 
 	public EnchantsManager(XPrisonEnchants plugin) {
 		this.plugin = plugin;
 		this.lockedPlayers = Collections.synchronizedList(new ArrayList<>());
+		this.charityMessageOnPlayers = new ArrayList<>();
+	}
+
+	public void toggleCharityMessages(Player p) {
+		if (this.charityMessageOnPlayers.contains(p.getUniqueId())) {
+			PlayerUtils.sendMessage(p, plugin.getEnchantsConfig().getMessage("charity_messages_disabled"));
+			this.charityMessageOnPlayers.remove(p.getUniqueId());
+		} else {
+			PlayerUtils.sendMessage(p, plugin.getEnchantsConfig().getMessage("charity_messages_enabled"));
+			this.charityMessageOnPlayers.add(p.getUniqueId());
+		}
+	}
+
+	public boolean hasOffCharityMessages(Player p) {
+		return this.charityMessageOnPlayers.contains(p.getUniqueId());
 	}
 
 	public Map<XPrisonEnchantment, Integer> getItemEnchants(ItemStack itemStack) {

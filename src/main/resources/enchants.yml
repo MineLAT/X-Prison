@@ -17,6 +17,8 @@ messages:
   enchant_no_level: "&e&l(!) &cYou do not have this enchant!"
   charity_other: "&a&l+ $%amount% &7(From %player%'s Charity)"
   charity_your: "&a&l+ $%amount% &7(From Your Charity)"
+  charity_messages_disabled: "&e&l(!) &7Charity messages are disabled."
+  charity_messages_enabled: "&e&l(!) &7Charity messages are enabled."
   blessing_other: "&6&l+ %amount% TOKENS &7(From %player%'s Blessing)"
   blessing_your: "&6&l+ %amount% TOKENS &7(From Your Blessing)"
   layer_disabled: "&e&l(!) &7You've &c&lDISABLED &7layer."
