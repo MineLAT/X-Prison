@@ -57,7 +57,7 @@ public final class CharityEnchant extends XPrisonEnchantment {
         for (Player p : Players.all()) {
             plugin.getCore().getEconomy().depositPlayer(p, amount);
 
-            if (!this.isMessagesEnabled()) {
+            if (!this.isMessagesEnabled() || plugin.getEnchantsManager().hasOffCharityMessages(p)) {
                 continue;
             }
 

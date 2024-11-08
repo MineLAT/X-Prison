@@ -58,7 +58,7 @@ public final class BlessingEnchant extends XPrisonEnchantment {
         for (Player p : Players.all()) {
             plugin.getCore().getTokens().getTokensManager().giveTokens(p, amount, null, ReceiveCause.MINING_OTHERS);
 
-            if (!this.isMessagesEnabled()) {
+            if (!this.isMessagesEnabled() || plugin.getEnchantsManager().hasOffCharityMessages(p)) {
                 continue;
             }
 
