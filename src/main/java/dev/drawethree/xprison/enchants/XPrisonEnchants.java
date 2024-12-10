@@ -120,6 +120,9 @@ public final class XPrisonEnchants implements XPrisonModule {
 
 		ValueCommand valueCommand = new ValueCommand(this);
 		valueCommand.register();
+
+		ClaimPickaxeCommand claimPickaxeCommand = new ClaimPickaxeCommand(this);
+		claimPickaxeCommand.register();
 	}
 
 

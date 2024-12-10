@@ -29,6 +29,7 @@ public class EnchantsConfig {
 	private CompMaterial firstJoinPickaxeMaterial;
 	private List<String> firstJoinPickaxeEnchants;
 	private String firstJoinPickaxeName;
+	private String defaultOwnerName;
 	private boolean keepPickaxesOnDeath;
 	private boolean useUnbreakablePermission;
 	private List<Action> openEnchantMenuActions;
@@ -58,6 +59,7 @@ public class EnchantsConfig {
 		this.firstJoinPickaxeMaterial = CompMaterial.fromString(getYamlConfig().getString("first-join-pickaxe.material"));
 		this.firstJoinPickaxeEnchants = getYamlConfig().getStringList("first-join-pickaxe.enchants");
 		this.firstJoinPickaxeName = getYamlConfig().getString("first-join-pickaxe.name");
+		this.defaultOwnerName = getYamlConfig().getString("default-owner-name");
 		this.keepPickaxesOnDeath = getYamlConfig().getBoolean("keep-pickaxes-on-death");
 		this.useUnbreakablePermission = getYamlConfig().getBoolean("use-unbreakable-permission");
 	}
@@ -108,6 +110,10 @@ public class EnchantsConfig {
 
 	public String getFirstJoinPickaxeName() {
 		return firstJoinPickaxeName;
+	}
+
+	public String getDefaultOwnerName() {
+		return defaultOwnerName;
 	}
 
 	public boolean isKeepPickaxesOnDeath() {

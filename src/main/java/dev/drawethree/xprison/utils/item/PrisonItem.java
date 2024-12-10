@@ -45,6 +45,10 @@ public class PrisonItem extends RtagItem {
         return get(MAIN, "tokens");
     }
 
+    public String getOwnerName() {
+        return get(MAIN, "owner");
+    }
+
     public void setEnchant(XPrisonEnchantment enchant, int level) {
         if (level > 0) {
             set(level, MAIN, "enchants", String.valueOf(enchant.getId()));
@@ -63,6 +67,10 @@ public class PrisonItem extends RtagItem {
 
     public void setTokens(long amount) {
         set(amount, MAIN, "tokens");
+    }
+
+    public void setOwnerName(String name) {
+        set(name, MAIN, "owner");
     }
 
     public void addBrokenBlocks(int amount) {

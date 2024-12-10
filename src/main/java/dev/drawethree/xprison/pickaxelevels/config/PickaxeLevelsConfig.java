@@ -14,6 +14,7 @@ public class PickaxeLevelsConfig {
 	private final XPrisonPickaxeLevels plugin;
 	private final FileManager.Config config;
 
+	private boolean preventNameOverwrite;
 	private Map<String, String> messages;
 	private Map<Integer, PickaxeLevel> pickaxeLevels;
 	private int progressBarLength;
@@ -41,6 +42,7 @@ public class PickaxeLevelsConfig {
 		this.loadPickaxeLevels();
 		this.progressBarDelimiter = this.getConfig().get().getString("progress-bar-delimiter");
 		this.progressBarLength = this.getConfig().get().getInt("progress-bar-length");
+		this.preventNameOverwrite = this.getConfig().get().getBoolean("prevent-name-overwrite");
 	}
 
 
@@ -113,5 +115,9 @@ public class PickaxeLevelsConfig {
 
 	public String getProgressBarDelimiter() {
 		return progressBarDelimiter;
+	}
+
+	public boolean isPreventingNameOverwrite() {
+		return preventNameOverwrite;
 	}
 }

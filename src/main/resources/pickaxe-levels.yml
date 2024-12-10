@@ -17,6 +17,7 @@ levels:
 progress-bar-delimiter: ":"
 # Length of progress bar
 progress-bar-length: 20
+prevent-name-overwrite: false
 messages:
   pickaxe-level-up: "&e&lPICKAXE &8» &7Your current pickaxe just leveled up to &eLevel %level%&7!"
   pickaxe-progress: "&e&lPICKAXE &8» &7Current progress: &c%blocks%&7/&a%blocks_required% Blocks"

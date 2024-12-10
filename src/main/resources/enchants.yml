@@ -29,6 +29,11 @@ messages:
   value_no_pickaxe: "&e&lVALUE &8» &7You must hold an pickaxe in your hand."
   value_value: "&e&lVALUE &8» &f%player%'s &7Pickaxe Value: &f%tokens% Tokens&7."
   value_cooldown: "&e&lVALUE &8» &7Please wait &f%time% Seconds&7 before using this command again."
+  claim_pickaxe_no_permission: "&e&lPICKAXE &8» &cYou do not have permission to claim pickaxes."
+  claim_pickaxe_cooldown: "&e&lPICKAXE &8» &cYou must wait &f%time% &cbefore running this command again."
+  claim_pickaxe_no_pickaxe: "&e&lPICKAXE &8» &cCouldn't find a pickaxe. Perhaps you should hold one?"
+  claim_pickaxe_already_claimed: "&e&lPICKAXE &8» &cThis pickaxe is already claimed by %owner%."
+  claim_pickaxe_success: "&e&lPICKAXE &8» &7You have successfully claimed this pickaxe."
   pickaxe_given: "&e&lENCHANT &8» &fYou have given pickaxe to &e%player%"
   pickaxe_received: "&e&lENCHANT &8» &fYou have received pickaxe from &e%sender%"
   pickaxe_inventory_full: "&e&lENCHANT &8» &e%player% &chas full inventory!"
@@ -641,8 +646,10 @@ Pickaxe:
   # FIXED = First 10 levels as roman,
   level-format: NUMBER
   excluded-format: "&7[&c-&7] &8%Enchant% %Level%"
+  default-owner-name: "&4Unclaimed"
   lore:
     - '&8&m------------------------'
+    - '&e&lOWNER: &f%PickaxeOwner%'
     - '&e&lBLOCKS MINED: &f%Blocks%/%Blocks_Required%'
     - '&e&lPICKAXE LEVEL: &f%PickaxeLevel% &7[%PickaxeProgress%&7]'
     - '&e&lDURABILITY: &f%Durability%'

@@ -55,6 +55,20 @@ public class PickaxeLevelsManager {
 		return this.plugin.getPickaxeLevelsConfig().getDefaultLevel();
 	}
 
+	/*
+	 * If flag to prevent name overwrite is enabled it means the item name can be changed by other plugins.
+	 * When enabled, a comparation between current item name and the expected name occurs.
+	 * If the names don't match it means the item has been renamed and therefore name should not be updated by X-Prison.
+	 */
+	private boolean usesPickaxeLevelNames(ItemStack pickaxe, PickaxeLevel currentLevel, Player player) {
+		if (!plugin.getPickaxeLevelsConfig().isPreventingNameOverwrite()) {
+			return false;
+		}
+		String currentName = pickaxe.getItemMeta().getDisplayName();
+		String expectedName = getDisplayName(currentLevel, player);
+		return currentName.equals(expectedName);
+	}
+
 	public ItemStack setPickaxeLevel(ItemStack item, PickaxeLevel level, Player p) {
 
 		if (level == null || level.getLevel() <= 0 || level.getLevel() > this.getMaxLevel().getLevel()) {
@@ -64,7 +78,7 @@ public class PickaxeLevelsManager {
 		final PrisonItem prisonItem = new PrisonItem(item);
 		prisonItem.setLevel(level.getLevel());
 		ItemStackBuilder builder = ItemStackBuilder.of(prisonItem.loadCopy());
-		if (level.getDisplayName() != null && !level.getDisplayName().isEmpty()) {
+		if (level.getDisplayName() != null && !level.getDisplayName().isEmpty() && usesPickaxeLevelNames(item, level, p)) {
 			builder = builder.name(this.getDisplayName(level, p));
 		}
 
