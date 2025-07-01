@@ -2,18 +2,24 @@ package dev.drawethree.xprison.autosell.listener;
 
 import dev.drawethree.xprison.autosell.XPrisonAutoSell;
 import dev.drawethree.xprison.autosell.model.SellRegion;
-import dev.drawethree.xprison.utils.compat.CompMaterial;
+import dev.drawethree.xprison.utils.compat.MinecraftVersion;
 import dev.drawethree.xprison.utils.player.PlayerUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
+import org.bukkit.Location;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class AutoSellListener {
 
     private final XPrisonAutoSell plugin;
+    private final Set<Location> clearLocations = new HashSet<>();
 
     public AutoSellListener(XPrisonAutoSell plugin) {
         this.plugin = plugin;
@@ -69,10 +75,22 @@ public class AutoSellListener {
 
                     if (success) {
                         // Do not set block to air due compatibility issues
-                        e.setDropItems(false);
+                        if (MinecraftVersion.atLeast(MinecraftVersion.V.v1_12)) {
+                            e.setDropItems(false);
+                        } else {
+                            final Location location = e.getBlock().getLocation();
+                            clearLocations.add(location);
+                            Schedulers.bukkit().runTaskLater(plugin.getCore(), () -> clearLocations.remove(location), 10L);
+                        }
                     } else {
                         e.setCancelled(true);
                     }
+                }).bindWith(this.plugin.getCore());
+
+        Events.subscribe(ItemSpawnEvent.class, EventPriority.HIGHEST)
+                .filter(e -> !e.isCancelled() && clearLocations.remove(e.getLocation()))
+                .handler(e -> {
+                    e.setCancelled(true);
                 }).bindWith(this.plugin.getCore());
     }
 }
