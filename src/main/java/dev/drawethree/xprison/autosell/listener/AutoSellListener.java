@@ -80,7 +80,7 @@ public class AutoSellListener {
                         } else {
                             final Location location = e.getBlock().getLocation();
                             clearLocations.add(location);
-                            Schedulers.bukkit().runTaskLater(plugin.getCore(), () -> clearLocations.remove(location), 10L);
+                            Schedulers.bukkit().runTaskLater(plugin.getCore(), () -> clearLocations.remove(location), 20L);
                         }
                     } else {
                         e.setCancelled(true);
@@ -88,7 +88,7 @@ public class AutoSellListener {
                 }).bindWith(this.plugin.getCore());
 
         Events.subscribe(ItemSpawnEvent.class, EventPriority.HIGHEST)
-                .filter(e -> !e.isCancelled() && clearLocations.remove(e.getLocation()))
+                .filter(e -> !e.isCancelled() && clearLocations.remove(e.getLocation().getBlock().getLocation()))
                 .handler(e -> {
                     e.setCancelled(true);
                 }).bindWith(this.plugin.getCore());
