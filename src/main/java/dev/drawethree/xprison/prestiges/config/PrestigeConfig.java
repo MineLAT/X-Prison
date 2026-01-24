@@ -20,6 +20,7 @@ public class PrestigeConfig {
     private String unlimitedPrestigePrefix;
     private List<String> prestigeTopFormat;
     private List<String> unlimitedPrestigesRewardPerPrestige;
+    private List<String> bulkPrestigeRewards;
     private Map<Long, Prestige> prestigeById;
     private Map<String, String> messages;
     private Map<Long, List<String>> unlimitedPrestigesRewards;
@@ -95,6 +96,7 @@ public class PrestigeConfig {
         boolean unlimitedPrestigesRewardPerPrestigeEnabled = configuration.getBoolean("unlimited_prestiges.rewards-per-prestige.enabled");
         if (unlimitedPrestigesRewardPerPrestigeEnabled) {
             this.unlimitedPrestigesRewardPerPrestige = configuration.getStringList("unlimited_prestiges.rewards-per-prestige.rewards");
+            this.bulkPrestigeRewards = configuration.getStringList("unlimited_prestiges.rewards-per-prestige.bulk-rewards");
         }
         this.topPlayersAmount = configuration.getInt("top_players_amount");
         this.savePlayerDataInterval = configuration.getInt("player_data_save_interval");
@@ -151,6 +153,10 @@ public class PrestigeConfig {
 
     public List<String> getUnlimitedPrestigesRewardPerPrestige() {
         return unlimitedPrestigesRewardPerPrestige;
+    }
+
+    public List<String> getBulkPrestigeRewards() {
+        return bulkPrestigeRewards;
     }
 
     public Map<Long, Prestige> getPrestigeById() {

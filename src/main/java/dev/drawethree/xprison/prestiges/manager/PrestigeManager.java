@@ -190,6 +190,10 @@ public class PrestigeManager {
 
         doPrestige(p, toBuy);
 
+        if (this.getConfig().getBulkPrestigeRewards() != null) {
+            run(p, this.getConfig().getBulkPrestigeRewards(), "1");
+        }
+
         PlayerUtils.sendMessage(p, this.getConfig().getMessage("prestige_up").replace("%Prestige%", toBuy.getPrefix()));
 
         return true;
@@ -256,15 +260,20 @@ public class PrestigeManager {
             PlayerUtils.sendMessage(p, this.getConfig().getMessage("max_prestige_started"));
 
             this.prestigingPlayers.add(p.getUniqueId());
+            int amount = 0;
             while (p.isOnline() && !isMaxPrestige(p) && this.isTransactionAllowed(p, nextPrestige.getCost())) {
 
                 if (areRanksEnabled() && !getRankManager().isMaxRank(p)) {
                     break;
                 }
+                amount++;
 
                 doPrestige(p, nextPrestige);
                 currentPrestige = nextPrestige;
                 nextPrestige = this.getNextPrestige(nextPrestige);
+            }
+            if (amount > 0 && this.getConfig().getBulkPrestigeRewards() != null) {
+                run(p, this.getConfig().getBulkPrestigeRewards(), String.valueOf(amount));
             }
 
             PlayerPrestigeEvent event = new PlayerPrestigeEvent(p, startPrestige, currentPrestige);
@@ -291,11 +300,7 @@ public class PrestigeManager {
 
         List<String> rewardsPerPrestige = this.getConfig().getUnlimitedPrestigesRewardPerPrestige();
         if (rewardsPerPrestige != null) {
-            if (!Bukkit.isPrimaryThread()) {
-                Schedulers.sync().run(() -> rewardsPerPrestige.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()))));
-            } else {
-                rewardsPerPrestige.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName())));
-            }
+            run(p, rewardsPerPrestige);
         }
 
         if (this.getConfig().isResetRankAfterPrestige() && areRanksEnabled()) {
@@ -326,23 +331,24 @@ public class PrestigeManager {
 
         long prestigeGained = currentPrestige.getId() - startPrestige.getId();
 
+        int bulkAmount = 0;
         for (int i = 0; i < prestigeGained; i++) {
             Prestige toGive = this.getPrestigeById(currentPrestige.getId() + 1 + i);
 
             if (toGive == null) {
                 break;
             }
+            bulkAmount++;
 
             givePrestigeRewards(toGive,target);
 
             List<String> rewardsPerPrestige = this.getConfig().getUnlimitedPrestigesRewardPerPrestige();
             if (rewardsPerPrestige != null) {
-                if (!Bukkit.isPrimaryThread()) {
-                    Schedulers.sync().run(() -> rewardsPerPrestige.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", target.getName()))));
-                } else {
-                    rewardsPerPrestige.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", target.getName())));
-                }
+                run(target, rewardsPerPrestige);
             }
+        }
+        if (bulkAmount > 0 && this.getConfig().getBulkPrestigeRewards() != null) {
+            run(target, this.getConfig().getBulkPrestigeRewards(), String.valueOf(bulkAmount));
         }
 
         PlayerPrestigeEvent event = new PlayerPrestigeEvent(target, startPrestige, currentPrestige);
@@ -350,6 +356,22 @@ public class PrestigeManager {
         Events.callSync(event);
 
         PlayerUtils.sendMessage(sender, this.getConfig().getMessage("prestige_add").replace("%player%", target.getName()).replace("%amount%", String.format("%,d", amount)));
+    }
+
+    private static void run(Player player, List<String> commands) {
+        if (!Bukkit.isPrimaryThread()) {
+            Schedulers.sync().run(() -> commands.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", player.getName()))));
+        } else {
+            commands.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", player.getName())));
+        }
+    }
+
+    private static void run(Player player, List<String> commands, String amount) {
+        if (!Bukkit.isPrimaryThread()) {
+            Schedulers.sync().run(() -> commands.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", player.getName()).replace("%amount%", amount))));
+        } else {
+            commands.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", player.getName()).replace("%amount%", amount)));
+        }
     }
 
     public void setPlayerPrestige(CommandSender sender, Player target, long amount) {

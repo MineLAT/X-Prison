@@ -44,6 +44,8 @@ unlimited_prestiges:
     # Commands to be exectured
     rewards:
       - 'eco give %player% 1'
+    bulk-rewards:
+      - 'eco give %player% %amount%'
   # Rewarding players on different prestiges
   rewards:
     10:
